@@ -36,8 +36,12 @@ def comp_choice():
 #user choice
 def user_choice():
     user_ch = input('What would you like to choose out of [stone,paper,scissor]: ').lower()
-    print('You chose: ',user_ch)
-    return user_ch
+    if user_ch not in ('stone' , 'paper' , 'scissor'):
+        print('Please use valid options...')
+        return user_choice()
+    else:
+        print('You chose: ',user_ch)
+        return user_ch
 
 
 
