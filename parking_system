@@ -1,0 +1,62 @@
+def UI():
+    print("-"*100)
+    print("MULTILEVEL PARKING SYSTEM FOR ABC MALL".center(100))
+    print("-"*100)
+    print("1. Park A Vechicle")
+    print("2. Remote Vehicle")
+    print("3. View Parking Status")
+    print("4. Search a Vehicle")
+    print("5. Show Available Slot")
+    print("6. Exit")
+    user_opt = int(input('What do you want to do?'))
+    if user_opt not in (1,2,3,4,5,6):
+        print('Please choose a valid Option...')
+        return UI()
+    else:
+        print('Please wait, Initializing choice...')
+def Park_Veh():
+    import json
+    import os
+
+    dname = input("What is the name of the driver: ")
+    dnum = int(input("What is the contacting number of the driver: "))
+    dnum_pl = input('Number plate of the vehicle: ')
+
+    if len(dnum_pl) != 10:
+        print('NOT A VALID VEHICLE!, NO PERMIT INSIDE THE FACILITY')
+        ask = input('Do you want to restart the detail extraction process(y/n): ')
+        if ask.lower() == "y":
+            print("Initializing Extraction")
+            return Park_Veh()
+        else:
+            print('Exiting System')
+            return
+
+    from datetime import datetime
+    now = datetime.now()
+    time = now.strftime("%I:%M:%S %p")
+    date = now.strftime("%d-%m-%Y")
+
+    vehicle_id = {
+        "Driver's Name ": dname,
+        "Contact Number ": dnum,
+        "Vehicle Plate": dnum_pl,
+        "Time of Entry": time,
+        "Date of Entry": date
+    }
+
+    # Load existing data if the file already exists
+    if os.path.exists("Parking_lot.json") and os.path.getsize("Parking_lot.json") > 0:
+        with open("Parking_lot.json", "r") as file:
+            vehicles = json.load(file)
+    else:
+        vehicles = []
+
+    vehicles.append(vehicle_id)
+
+    with open("Parking_lot.json", "w") as file:
+        json.dump(vehicles, file, indent=5)
+
+    print('RECORD HAS BEEN ADDED!')
+
+Park_Veh()
